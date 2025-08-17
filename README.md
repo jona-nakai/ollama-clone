@@ -1,4 +1,5 @@
 # ollama-clone
+A project cloning Ollama's GUI to run local LLM's
 
 ## Prerequisites
 - Python 3.10+
