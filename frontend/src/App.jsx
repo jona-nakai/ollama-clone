@@ -6,6 +6,8 @@ export default function App() {
   // initialize message history and current user input
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [models, setModels] = useState(['codellama:7b', 'qwen3:8b', 'deepseek-r1:8b', 'llama3.1:8b'])
+  const [selectedModel, setSelectedModel] = useState('llama3.1:8b')
   
   // create so we can point to the bottom of the chat history
   // ex: scroll to the bottom when a new chat is sent
@@ -46,7 +48,7 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'llama3.1:8b',
+          model: selectedModel,
           messages: [...messages, userMessage]
         })
       });
@@ -93,8 +95,17 @@ export default function App() {
         />
         <div className="chat__buttons">
           <div className="chat__model">
-            llama3
+            <select
+              className="model_picker"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+            >
+              {models.map((m, i) => (
+                <option key={i} value={m}>{m}</option>
+              ))}
+            </select>
           </div>
+
           {/* chat send button */}
           <button 
             className="chat__send"

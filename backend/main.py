@@ -10,7 +10,7 @@ app = FastAPI()
 # give permission to vite to make requests to backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"]
 )
@@ -37,7 +37,7 @@ def ping():
 @app.post("/chat")
 async def chat(req: ChatReq):
     try:
-        async with httpx.AsyncClient(timeout=60) as client:
+        async with httpx.AsyncClient(timeout=90) as client:
             r = await client.post(
                 "http://localhost:11434/api/chat",
                 json={

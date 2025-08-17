@@ -37,7 +37,7 @@ app.whenReady().then(()=> {
 
 // if there are no windows, create a window
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length() === 0) createWindow();
+  if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
 // if on mac, and all windos are closed, quit the app
