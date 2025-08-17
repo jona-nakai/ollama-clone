@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import './app.css'
+import './App.css'
+import arrowImage from './assets/arrow.png';
 
 export default function App() {
   // initialize message history and current user input
@@ -23,22 +24,47 @@ export default function App() {
     }
   };
 
+  // handle text input area resizing
+  const handleTextareaResize = (e) => {
+    const textarea = e.target;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 195) + 'px'
+  }
+
   // function for sending a message to the computer and updating setMessages
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const text = input.trim();
     if (!text) return;
 
     // updating setMessages with user message
-    const userMessage = { id: Date.now(), role: 'user', text };
+    const userMessage = { role: 'user', content: text };
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    // updating setMessages with bot message
-    // wait 300 milliseconds and then send the response
-    setTimeout(() => {
-      const botMessage = { id: Date.now(), role: 'bot', text: `You said ${text}` };
+   try {
+      const res = await fetch('http://localhost:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'llama3.1:8b',
+          messages: [...messages, userMessage]
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error(`Backend error: ${res.status}`);
+      }
+
+      // Ollama /api/chat returns:
+      // { "message": { "role": "assistant", "content": "..." }, ... }
+      const data = await res.json() ?? { role: 'assistant', content: '(no reply)' };
+      const botMessage = data.message ?? { role: 'assistant', content: '(no reply)' };
+
       setMessages(prev => [...prev, botMessage]);
-    }, 300);
+   } catch(err) {
+      const errorMessage = {role: 'assistant', content: `Error: ${err.message}`};
+      setMessages(prev => [...prev, errorMessage]);
+   }
   }
 
   return (
@@ -46,9 +72,9 @@ export default function App() {
       {/* message history */}
       <main className="chat__messages">
         {/* making every message in the messages array into a div */}
-        {messages.map((m) => (
-          <div key={m.id} className={`message-${m.role}`}>
-            <div className="message__bubble">{m.text}</div>
+        {messages.map((m, i) => (
+          <div key={i} className={`message-${m.role}`}>
+            <div className="message__bubble">{m.content}</div>
           </div>
         ))}
         <div ref={endRef} />
@@ -62,16 +88,22 @@ export default function App() {
           placeholder="Send a message"
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={onKeyDown}
+          onInput={handleTextareaResize}
+          rows={1}
         />
-        {/* chat send button */}
-        <button 
-          className="chat__send"
-          onClick={sendMessage}
-          disabled={!input.trim()}
-        >
-          {/* Replace with arrow later */}
-          Send
-        </button>
+        <div className="chat__buttons">
+          <div className="chat__model">
+            llama3
+          </div>
+          {/* chat send button */}
+          <button 
+            className="chat__send"
+            onClick={sendMessage}
+            disabled={!input.trim()}
+          >
+            <img className="arrow_image" src={arrowImage} />
+          </button>
+        </div>
       </footer>
     </div>
   );

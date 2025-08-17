@@ -11,8 +11,10 @@ ipcMain.handle('ping', () => 'pong from main');
 // create the window that holds the application
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1100,
-    height: 800,
+    width: 800,
+    height: 600,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,

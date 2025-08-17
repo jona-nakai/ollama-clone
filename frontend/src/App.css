@@ -1,0 +1,133 @@
+body {
+  background-color: rgb(23, 23, 23);
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+}
+
+.chat {
+  width: 760px;
+}
+
+.chat__messages {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.message-user,
+.message-assistant {
+  display: flex;
+  width: 100%;
+}
+
+.message-user {
+  justify-content: flex-end;
+  color: white;
+}
+
+.message-assistant {
+  justify-content: flex-start;
+
+}
+
+.message__bubble {
+  padding: 10px 12px;
+  border-radius: 30px;
+}
+
+.message-user .message__bubble {
+  max-width: 60%;
+  background-color: rgb(64, 64, 64);
+}
+
+.message-assistant .message__bubble {
+  max-width: 90%;
+  color: rgb(212, 212, 212);
+}
+
+.chat__inputbar {
+  border: none;
+  width: 760px;
+  border-radius: 25px;
+  background-color: rgb(38, 38, 38);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat__input {
+  margin-top: 20px;
+  margin-left: 17px;
+  margin-right: 17px;
+  border: none;
+  background-color: rgb(38, 38, 38);
+  resize: none;
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.chat__buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 50px;
+  padding-right: 10px;
+}
+
+.chat__model {
+  background-color: rgb(64, 64, 64);
+  color: white;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 20px;
+}
+
+.chat__send {
+  padding: 0;
+  height: 33px;
+  width: 33px;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+.chat__send:not(:disabled) {
+  cursor: pointer;
+}
+
+.chat__send:disabled {
+  background-color: rgb(64, 64, 64);
+  cursor: default;
+}
+
+.chat__send:disabled .arrow_image {
+  opacity: 0.5;
+}
+
+.chat__send:hover,
+.chat__send:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.chat__send:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+.arrow_image {
+  height: 16px;
+  background: transparent;
+}
